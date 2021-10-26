@@ -6,7 +6,7 @@ install:
     - pip install -r requirements-dev.txt
 
 env:
-    - PYTHONPATH=/home/travis/build/bethss/demo-repo21
+    - PYTHONPATH=/home/travis/build/bethss/demo-repo2
 
 script:
     - make tests
