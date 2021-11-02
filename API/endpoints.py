@@ -45,7 +45,7 @@ class ListRooms(Resource):
         """
         rooms = db.get_rooms()
         if rooms is None:
-            pass
+            raise (wz.NotFound("Chat room db not dound."))
         else:
             return rooms
 
