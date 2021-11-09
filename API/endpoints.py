@@ -10,7 +10,6 @@ import werkzeug.exceptions as wz
 
 import db.db as db
 
-
 app = Flask(__name__)
 api = Api(app)
 
@@ -38,16 +37,35 @@ class ListRooms(Resource):
     This endpoint returns a list of all rooms.
     """
     @api.response(HTTPStatus.OK, 'Success')
-    @api.response(HTTPStatus.NOT_FOUND, 'Not found')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
     def get(self):
         """
         Returns a list of all chat rooms.
         """
         rooms = db.get_rooms()
         if rooms is None:
-            raise (wz.NotFound("Chat room db not dound."))
+            raise (wz.NotFound("Chat room db not found."))
         else:
             return rooms
+
+
+@api.route('/create_room/<roomname>')
+class CreateRoom(Resource):
+    """
+    This class supports adding a chat room.
+    """
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    def post(self, roomname):
+        """
+        This method adds a room to the room db.
+        """
+        ret = db.add_room(roomname)
+        if ret == db.NOT_FOUND:
+            raise (wz.NotFound("Chat room db not found."))
+        elif ret == db.DUPLICATE:
+            raise (wz.NotAcceptable("Chat room name already exists."))
 
 
 @api.route('/endpoints')
